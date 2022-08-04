@@ -1,0 +1,62 @@
+@import "./reset";
+
+body,
+html {
+    background: #eee;
+    color: #222;
+    font-family: "Open Sans", sans-serif;
+    line-height: 150%;
+}
+
+section {
+    max-width: 80%;
+    padding: 1.5em 1.5em 1.5em 1.5em;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+
+    h2,
+    h3 {
+        text-align: center;
+    }
+
+    .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        .head,
+        .building {
+            &.head {
+                text-transform: uppercase;
+                font-weight: bold;
+                margin-bottom: 10px;
+                padding: 10px;
+                color: #eee;
+                background: #222;
+            }
+
+            &.building {
+                padding: 10px;
+
+                &:nth-child(odd) {
+                    background: #eee;
+                }
+            }
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            justify-content: center;
+            align-items: center;
+
+            div {
+                text-align: center;
+            }
+        }
+    }
+
+    .footer {
+        margin-top: 40px;
+    }
+}
