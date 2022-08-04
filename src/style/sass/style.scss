@@ -9,7 +9,7 @@ html {
 }
 
 section {
-    max-width: 80%;
+    max-width: 95%;
     padding: 1.5em 1.5em 1.5em 1.5em;
     background: #fff;
     border-radius: 10px;
@@ -19,6 +19,10 @@ section {
     h2,
     h3 {
         text-align: center;
+
+        span {
+            font-weight: 200;
+        }
     }
 
     .list {
@@ -46,7 +50,7 @@ section {
             }
 
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.3fr;
             justify-content: center;
             align-items: center;
 

@@ -10,6 +10,8 @@ export default class Session {
         this.earn = 0;
         this.payday = 0;
         this.totalBought = 0;
+        this.newBudget = 0;
+        this.pourcentage = 0;
         this.init();
     }
 
@@ -34,7 +36,11 @@ export default class Session {
 
     setDifference() {
         this.dataObject.forEach((estate) => {
-            estate.difference = estate.sale - estate.bought;
+            if (estate.sale > estate.bought) {
+                estate.difference = estate.sale - estate.bought;
+            } else {
+                estate.difference = estate.bought - estate.sale;
+            }
         });
     }
 
@@ -42,6 +48,10 @@ export default class Session {
         this.dataObject.forEach((estate) => {
             this.earn += estate.difference;
         });
+        this.newBudget = this.budget + this.earn;
+        this.pourcentage = parseFloat(
+            (this.earn * 100) / this.totalBought
+        ).toFixed(2);
     }
 
     setPayday() {

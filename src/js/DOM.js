@@ -5,28 +5,20 @@ export default class DOM {
     }
 
     formatNumbers() {
-        this.data.budget = new Intl.NumberFormat("fr-FR").format(
-            this.data.budget
-        );
-        this.data.earn = new Intl.NumberFormat("fr-FR").format(this.data.earn);
-        this.data.payday = new Intl.NumberFormat("fr-FR").format(
-            this.data.payday
-        );
-        this.data.totalBought = new Intl.NumberFormat("fr-FR").format(
-            this.data.totalBought
-        );
+        const numberFormat = (number) => {
+            return new Intl.NumberFormat("fr-FR").format(number);
+        };
+        this.data.budget = numberFormat(this.data.budget);
+        this.data.earn = numberFormat(this.data.earn);
+        this.data.payday = numberFormat(this.data.payday);
+        this.data.totalBought = numberFormat(this.data.totalBought);
+        this.data.newBudget = numberFormat(this.data.newBudget);
 
         this.data.dataObject.forEach((estate) => {
-            estate.bought = new Intl.NumberFormat("fr-FR").format(
-                estate.bought
-            );
-            estate.estimated = new Intl.NumberFormat("fr-FR").format(
-                estate.estimated
-            );
-            estate.difference = new Intl.NumberFormat("fr-FR").format(
-                estate.difference
-            );
-            estate.sale = new Intl.NumberFormat("fr-FR").format(estate.sale);
+            estate.bought = numberFormat(estate.bought);
+            estate.estimated = numberFormat(estate.estimated);
+            estate.difference = numberFormat(estate.difference);
+            estate.sale = numberFormat(estate.sale);
         });
     }
 
@@ -34,8 +26,8 @@ export default class DOM {
         let section = document.createElement("section");
         section.innerHTML = `
             <div class="section-header">
-                <h2>Jour ${this.data.start} > Jour ${this.data.end}</h2>
-                <h3>${this.data.budget} $</h3>
+                <h2>Jour ${this.data.start} &#8594; Jour ${this.data.end}</h2>
+                <h3><span>Budget :</span> ${this.data.budget} $</h3>
             </div>
             `;
         return section;
@@ -48,9 +40,11 @@ export default class DOM {
             <div class="estimated">${estate.estimated} $ </div>
             <div class="bought">${estate.bought} $ </div>
             <div class="sale">${estate.sale} $ </div>
-            <div class="buyAt">${estate.buyAt}</div>
-            <div class="sellAt">${estate.sellAt}</div>
+            <div class="buyAt">${estate.buyAt} &#8594; ${estate.sellAt}</div>
             <div class="difference">${estate.difference} $ </div>
+            <div class="differenceDay">${
+                estate.sellAt - estate.buyAt
+            } jour(s)</div>
         `;
 
         return building;
@@ -64,9 +58,9 @@ export default class DOM {
                 <div class="estimated">Valeur estimé</div>
                 <div class="bought">Acheté</div>
                 <div class="sale">Vendu</div>
-                <div class="buyAt">Acheter le</div>
-                <div class="sellAt">Vendu le</div>
+                <div class="buyAt">Achat &#8594; Vente</div>
                 <div class="difference">Bénéfice</div>
+                <div class="differenceDay">Vendu en</div>
             </li>
         `;
         this.data.dataObject.forEach((estate) => {
@@ -82,15 +76,23 @@ export default class DOM {
         footer.classList.add("footer");
         footer.innerHTML = `
             <p>
+                <hr>
                 Achat de ${this.data.buildingBought} bâtiment(s) pour ${
             this.data.totalBought
         } $
-                <br>
+                <hr>
                 Bénéfice total : <strong> ${this.data.earn} $ </strong> pour ${
             this.data.end - this.data.start
         } jour(s)
-                <br>
+                <hr>
+                Le bénéfice est de <strong> ${
+                    this.data.pourcentage
+                }% </strong> du total investi
+                <hr>
                 Moyenne par jour : <strong> ${this.data.payday} $/jour </strong>
+                <hr>
+                Nouveau budget : <strong>~ ${this.data.newBudget} $ </strong>
+                <hr>
             </p>
         `;
 
