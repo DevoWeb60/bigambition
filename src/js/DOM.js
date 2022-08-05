@@ -6,6 +6,8 @@ export default class DOM {
         this.totalBought = 0;
         this.totalPourcentage = 0;
         this.totalBuildingBought = 0;
+        this.startingBudget = 0;
+        this.endingBudget = 0;
         if (this.data.length) {
             this.totalEarn(this.data);
         } else {
@@ -58,6 +60,7 @@ export default class DOM {
             <div class="differenceDay">${
                 estate.sellAt - estate.buyAt
             } jour(s)</div>
+            <div class="pourcentage">${estate.pourcentage} %</div>
         `;
 
         return building;
@@ -74,6 +77,7 @@ export default class DOM {
                 <div class="buyAt">Achat &#8594; Vente</div>
                 <div class="difference">Bénéfice</div>
                 <div class="differenceDay">Vendu en</div>
+                <div class="pourcentage">Bénéfice %</div>
             </li>
         `;
         this.data.dataObject.forEach((estate) => {
@@ -108,6 +112,9 @@ export default class DOM {
                 <hr>
                 Nouveau budget : <strong>~ ${this.data.newBudget} $ </strong>
                 <hr>
+                Pourcentage moyen de rachat : <strong>${
+                    this.data.middlePourcent
+                }%</strong>
             </p>
         `;
 
@@ -119,6 +126,9 @@ export default class DOM {
         const activityStart = lastSession.start;
         const activityEnd = sessions[0].end;
         const activityDuration = activityEnd - activityStart;
+        this.startingBudget = lastSession.budget;
+        this.endingBudget = sessions[0].newBudget;
+
         sessions.forEach((estate) => {
             this.totalEarnSinceStart += estate.earn;
             this.totalBought += estate.totalBought;
@@ -132,12 +142,18 @@ export default class DOM {
         this.totalBought = this.numberFormat(this.totalBought);
         this.totalEarnSinceStart = this.numberFormat(this.totalEarnSinceStart);
         this.totalPayday = this.numberFormat(this.totalPayday);
+        this.startingBudget = this.numberFormat(this.startingBudget);
+        this.endingBudget = this.numberFormat(this.endingBudget);
 
         const div = document.createElement("div");
         div.classList.add("totalStats");
         div.innerHTML = `
             <h2>Statistiques global</h2>
             <ul class="list">
+                <li>
+                    <span class="title">Budgets</span>
+                    <span class="result">${this.startingBudget} $ &#8594; ${this.endingBudget} $</span>
+                </li>
                 <li>
                     <span class="title">Batiments acheté</span>
                     <span class="result">${this.totalBuildingBought}</span>

@@ -12,6 +12,7 @@ export default class Session {
         this.totalBought = 0;
         this.newBudget = 0;
         this.pourcentage = 0;
+        this.middlePourcent = 0;
         this.init();
     }
 
@@ -44,6 +45,20 @@ export default class Session {
         });
     }
 
+    setPourcentage() {
+        let pourcent = 0;
+        this.dataObject.forEach((estate) => {
+            estate.pourcentage = parseFloat(
+                (estate.difference * 100) / estate.estimated
+            ).toFixed(2);
+            pourcent += Number(estate.pourcentage);
+        });
+        console.log("pourcent", pourcent);
+        this.middlePourcent = parseFloat(
+            pourcent / this.buildingBought
+        ).toFixed(2);
+    }
+
     setEarn() {
         this.dataObject.forEach((estate) => {
             this.earn += estate.difference;
@@ -62,6 +77,7 @@ export default class Session {
         this.convertToMillions();
         this.setTotalBought();
         this.setDifference();
+        this.setPourcentage();
         this.setEarn();
         this.setPayday();
     }

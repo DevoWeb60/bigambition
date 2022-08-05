@@ -3,6 +3,46 @@ import Building from "./src/js/Building.js";
 import DOM from "./src/js/DOM.js";
 
 const sessions = [
+    new Session(696, 735, 591.5, [
+        new Building(327.5, 294.5, 327.5, 696, 699),
+        new Building(145.3, 138.3, 145.3, 696, 698),
+        new Building(41.7, 37.7, 41.7, 696, 697),
+        new Building(51.3, 45.3, 51.3, 696, 700),
+        new Building(50.4, 44.4, 50.4, 696, 699),
+        new Building(41.7, 39.7, 41.7, 697, 698),
+        new Building(214.5, 205.5, 214.5, 698, 700),
+        new Building(203.3, 201.3, 203.3, 699, 701),
+        new Building(85.6, 84.6, 85.6, 699, 714),
+        new Building(80.1, 75.1, 80.1, 699, 703),
+        new Building(313.7, 283.5, 313.7, 700, 702),
+        new Building(152.9, 150.9, 152.9, 701, 702),
+        new Building(38.7, 37.65, 38.7, 701, 712),
+        new Building(532.5, 479.5, 532.5, 702, 703),
+        new Building(233.7, 210.7, 233.7, 703, 710),
+        new Building(90.1, 88.1, 90.1, 704, 706),
+        new Building(113.3, 112.3, 113.3, 704, 711),
+        new Building(14.9, 13.9, 14.9, 704, 708),
+        new Building(202.9, 192.9, 202.9, 707, 709),
+        new Building(35.6, 32.6, 35.6, 707, 708),
+        new Building(22.4, 20.4, 22.4, 707, 709),
+        new Building(295.5, 285.5, 295.5, 709, 715),
+        new Building(677.4, 670.4, 677, 715, 716),
+        new Building(41.7, 37.7, 41.65, 715, 727),
+        new Building(36.1, 35.1, 36.1, 715, 717),
+        new Building(39.2, 35.2, 39.2, 715, 721),
+        new Building(35.2, 32.2, 35.2, 716, 718),
+        new Building(24.5, 23.5, 24.45, 716, 725),
+        new Building(25.2, 24.2, 25.15, 716, 720),
+        new Building(251.7, 230.7, 251.675, 718, 724),
+        new Building(132, 119, 131.98, 718, 720),
+        new Building(15.6, 14.6, 15.6, 718, 719),
+        new Building(26.4, 24.4, 26.4, 719, 724),
+        new Building(113.3, 110.3, 113.3, 719, 723),
+        new Building(89.1, 83.1, 89.1, 721, 729),
+        new Building(382.7, 375.7, 382.65, 723, 725),
+        new Building(763, 687, 762, 728, 735),
+        new Building(175.1, 165.1, 175, 730, 732),
+    ]),
     new Session(640, 695, 377, [
         new Building(101.4, 98.4, 101.4, 640, 644),
         new Building(73.2, 67.2, 73.2, 640, 641),
@@ -60,14 +100,14 @@ const sessions = [
         new Building(34, 32, 34, 576, 597),
         new Building(93, 87, 93, 586, 593),
     ]),
-    new Session(532, 538, 139, [
-        new Building(94, 89, 96, 532, 538),
-        new Building(24, 20, 25, 532, 536),
-        new Building(35.5, 30.5, 37, 532, 538),
-    ]),
-    new Session(470, 530, 128.8, [
-        new Building(100, 100 - 45.5, 100, 470, 530),
-    ]),
+    // new Session(532, 538, 139, [
+    //     new Building(94, 89, 96, 532, 538),
+    //     new Building(24, 20, 25, 532, 536),
+    //     new Building(35.5, 30.5, 37, 532, 538),
+    // ]),
+    // new Session(470, 530, 128.8, [
+    //     new Building(100, 100 - 45.5, 100, 470, 530),
+    // ]),
 ];
 
 const appendTotal = new DOM(sessions);
