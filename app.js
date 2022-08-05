@@ -109,7 +109,7 @@ const sessions = [
     //     new Building(100, 100 - 45.5, 100, 470, 530),
     // ]),
 ];
-
+console.log(sessions);
 const appendTotal = new DOM(sessions);
 
 sessions.forEach((session) => {

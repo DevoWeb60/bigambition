@@ -10,6 +10,7 @@ export default class DOM {
         this.endingBudget = 0;
         if (this.data.length) {
             this.totalEarn(this.data);
+            this.createNewSessionForm();
         } else {
             this.init();
         }
@@ -40,11 +41,29 @@ export default class DOM {
     createSection() {
         let section = document.createElement("section");
         section.innerHTML = `
-            <div class="section-header">
+        <div class="inactive">
+            <div class="inactive-header">
                 <h2>Jour ${this.data.start} &#8594; Jour ${this.data.end}</h2>
-                <h3><span>Budget :</span> ${this.data.budget} $</h3>
+                <h3><span>Recette : </span>${this.data.earn} $</h3>
+                <h3><span>Building Acheté : </span>${this.data.buildingBought}</h3>
+                <button id="delete">Supprimer</button>
             </div>
-            `;
+        </div>
+        <div class="section-header">
+            <h2>Jour ${this.data.start} &#8594; Jour ${this.data.end}</h2>
+            <h3><span>Budget :</span> ${this.data.budget} $</h3>
+        </div>
+        `;
+        section
+            .querySelector(".inactive-header")
+            .addEventListener("click", () => {
+                section.classList.add("active");
+            });
+        section
+            .querySelector(".section-header")
+            .addEventListener("click", () => {
+                section.classList.remove("active");
+            });
         return section;
     }
 
@@ -52,6 +71,7 @@ export default class DOM {
         const building = document.createElement("li");
         building.className = "building";
         building.innerHTML = `
+            <div class="delete-building"></div>
             <div class="estimated">${estate.estimated} $ </div>
             <div class="bought">${estate.bought} $ </div>
             <div class="sale">${estate.sale} $ </div>
@@ -62,8 +82,36 @@ export default class DOM {
             } jour(s)</div>
             <div class="pourcentage">${estate.pourcentage} %</div>
         `;
+        const deleteBuilding = building.querySelector(".delete-building");
+        const button = document.createElement("button");
+        button.innerHTML = "&#10060;";
+
+        deleteBuilding.appendChild(button);
 
         return building;
+    }
+
+    createNewSessionForm() {
+        const div = document.createElement("div");
+        div.classList.add("new-session");
+        div.innerHTML = `
+        <div class="input-group">
+            <span class="period"></span>
+        </div>
+        <button id="new-session">Nouvelle session</button>
+        `;
+        const inputGroup = div.querySelector(".input-group");
+        const period = inputGroup.querySelector(".period");
+        this.createInputBuilding("start", "412", period);
+        period.innerHTML += " &#8594; ";
+        this.createInputBuilding("end", "457", period);
+        this.createInputBuilding(
+            "budget",
+            "Budget : 1 = 1 000 000",
+            inputGroup
+        );
+
+        return document.body.appendChild(div);
     }
 
     createList() {
@@ -71,6 +119,7 @@ export default class DOM {
         list.classList.add("list");
         list.innerHTML = `
             <li class="head">
+                <div></div>
                 <div class="estimated">Valeur estimé</div>
                 <div class="bought">Acheté</div>
                 <div class="sale">Vendu</div>
@@ -85,7 +134,42 @@ export default class DOM {
             list.appendChild(building);
         });
 
+        list.innerHTML += `
+        <li class="input-group">
+            <div></div>
+        </li>
+        `;
+
+        const inputGroup = list.querySelector(".input-group");
+        this.createInputBuilding("estimated", "1.5 = 1 500 000", inputGroup);
+
+        this.createInputBuilding("bought", "2.5 = 2 500 000", inputGroup);
+        this.createInputBuilding("sale", "0.7 = 700 000", inputGroup);
+        inputGroup.innerHTML += `<div class="buyAt"></div>`;
+        const buyAt = inputGroup.querySelector(".buyAt");
+        this.createInputBuilding("buyAt", "510", buyAt);
+        buyAt.innerHTML += `&#8594;`;
+        this.createInputBuilding("sellAt", "530", buyAt);
+        inputGroup.innerHTML += `
+            <div class="difference"></div>
+            <div class="differenceDay"></div>
+            <div class="submit"></div>
+            `;
+        const button = document.createElement("button");
+        button.innerHTML = "Ajouter";
+        inputGroup.querySelector(".submit").appendChild(button);
         return list;
+    }
+
+    createInputBuilding(id, placeholder, appendTo) {
+        const input = document.createElement("input");
+        input.id = id;
+        input.setAttribute("type", "number");
+        input.setAttribute("min", "0");
+        input.setAttribute("step", "1");
+        input.setAttribute("placeholder", placeholder);
+
+        return appendTo.appendChild(input);
     }
 
     createFooter() {

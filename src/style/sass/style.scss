@@ -1,10 +1,14 @@
 @import "./reset";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;900&family=Roboto:wght@100;400;700;900&display=swap");
 
+$white: #eee;
+$black: #222;
+$green: #00ac72;
+
 body,
 html {
-    background: #eee;
-    color: #222;
+    background: $white;
+    color: $black;
     font-family: "Roboto", sans-serif;
     line-height: 150%;
 }
@@ -18,13 +22,77 @@ ul {
     padding: 0;
 }
 
+button {
+    border: none;
+    background: transparent;
+    border: 2px solid $black;
+    border-radius: 9999px;
+    padding: 7px 20px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+        background: $black;
+        color: $white;
+    }
+}
+
 section {
     max-width: 95%;
-    padding: 1.5em 1.5em 1.5em 1.5em;
-    background: #fff;
+    padding: 0 20px;
+    background: lighten($white, 10%);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 10px auto;
+    transition: 0.3s ease-in-out;
+
+    .section-header,
+    .inactive {
+        padding: 20px 0;
+        cursor: pointer;
+    }
+
+    .section-header {
+        transition: 0.3s ease-in-out;
+
+        &:hover {
+            color: lighten($black, 50);
+        }
+    }
+
+    &.active {
+        .inactive {
+            display: none;
+        }
+
+        .list,
+        .section-header,
+        .footer {
+            display: block;
+        }
+
+        &:hover {
+            transform: scale(1);
+        }
+    }
+
+    &:hover {
+        transform: scale(1.02);
+    }
+    .inactive {
+        .inactive-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    .list,
+    .section-header,
+    .footer {
+        display: none;
+    }
 
     h2,
     h3 {
@@ -39,26 +107,36 @@ section {
         margin: 0;
 
         .head,
-        .building {
+        .building,
+        .input-group {
             &.head {
                 text-transform: uppercase;
                 font-weight: bold;
                 margin-bottom: 10px;
                 padding: 10px;
-                color: #eee;
-                background: #222;
+                color: $white;
+                background: $black;
             }
 
             &.building {
                 padding: 10px;
 
+                .delete-building button {
+                    border: none;
+
+                    &:hover {
+                        background: transparent;
+                        transform: rotate(90deg);
+                    }
+                }
+
                 &:nth-child(odd) {
-                    background: #eee;
+                    background: darken($white, 7);
                 }
             }
 
             display: grid;
-            grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.3fr;
+            grid-template-columns: 0.2fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.3fr;
             justify-content: center;
             align-items: center;
 
@@ -74,8 +152,8 @@ section {
 }
 
 .totalStats {
-    background: #222;
-    color: #eee;
+    background: $black;
+    color: $white;
     width: 95%;
     margin: 10px auto;
     padding: 20px;
@@ -103,8 +181,89 @@ section {
             }
 
             &:nth-child(even) {
-                background: #333;
+                background: lighten($black, 7);
             }
+        }
+    }
+}
+
+.input-group {
+    padding: 10px;
+    background: $black;
+    input,
+    button {
+        padding: 5px;
+        color: $white;
+        background: transparent;
+        border: none;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+    }
+
+    input {
+        &:focus {
+            border-bottom: 2px solid $white;
+        }
+        border-bottom: 2px solid lighten($black, 15);
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .buyAt {
+        input {
+            width: 30%;
+        }
+    }
+}
+
+.new-session {
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &,
+    .input-group {
+        background: $green;
+    }
+    .input-group {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .period {
+            display: flex;
+
+            input {
+                width: 30%;
+            }
+        }
+        input {
+            width: 50%;
+            border-bottom: 2px solid darken($green, 15);
+
+            &::placeholder {
+                color: darken($green, 15);
+            }
+
+            &:focus {
+                border-bottom: 2px solid $white;
+            }
+        }
+    }
+    button {
+        border-color: darken($green, 20);
+        color: darken($green, 20);
+
+        &:hover {
+            background: darken($green, 20);
+            color: $white;
         }
     }
 }

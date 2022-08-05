@@ -2,6 +2,10 @@ const MILLION = 1000000;
 
 export default class Session {
     constructor(start, end, budget, dataObject) {
+        this.id = Math.round(
+            Date.now() * Math.random() * (Math.random() * 156165) +
+                Math.random()
+        );
         this.start = start;
         this.end = end;
         this.budget = budget;
@@ -53,7 +57,6 @@ export default class Session {
             ).toFixed(2);
             pourcent += Number(estate.pourcentage);
         });
-        console.log("pourcent", pourcent);
         this.middlePourcent = parseFloat(
             pourcent / this.buildingBought
         ).toFixed(2);
