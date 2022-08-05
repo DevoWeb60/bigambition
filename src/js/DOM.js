@@ -1,24 +1,37 @@
 export default class DOM {
-    constructor(data) {
+    constructor(data = false) {
         this.data = data;
-        console.log(this.data);
+        this.totalEarnSinceStart = 0;
+        this.totalPayday = 0;
+        this.totalBought = 0;
+        this.totalPourcentage = 0;
+        this.totalBuildingBought = 0;
+        if (this.data.length) {
+            this.totalEarn(this.data);
+        } else {
+            this.init();
+        }
     }
 
+    numberFormat(number) {
+        return new Intl.NumberFormat("fr-FR").format(number);
+    }
     formatNumbers() {
-        const numberFormat = (number) => {
-            return new Intl.NumberFormat("fr-FR").format(number);
-        };
-        this.data.budget = numberFormat(this.data.budget);
-        this.data.earn = numberFormat(this.data.earn);
-        this.data.payday = numberFormat(this.data.payday);
-        this.data.totalBought = numberFormat(this.data.totalBought);
-        this.data.newBudget = numberFormat(this.data.newBudget);
+        this.totalBought = this.numberFormat(this.totalBought);
+        this.totalEarnSinceStart = this.numberFormat(this.totalEarnSinceStart);
+        this.totalPayday = this.numberFormat(this.totalPayday);
+
+        this.data.budget = this.numberFormat(this.data.budget);
+        this.data.earn = this.numberFormat(this.data.earn);
+        this.data.payday = this.numberFormat(this.data.payday);
+        this.data.totalBought = this.numberFormat(this.data.totalBought);
+        this.data.newBudget = this.numberFormat(this.data.newBudget);
 
         this.data.dataObject.forEach((estate) => {
-            estate.bought = numberFormat(estate.bought);
-            estate.estimated = numberFormat(estate.estimated);
-            estate.difference = numberFormat(estate.difference);
-            estate.sale = numberFormat(estate.sale);
+            estate.bought = this.numberFormat(estate.bought);
+            estate.estimated = this.numberFormat(estate.estimated);
+            estate.difference = this.numberFormat(estate.difference);
+            estate.sale = this.numberFormat(estate.sale);
         });
     }
 
@@ -77,9 +90,11 @@ export default class DOM {
         footer.innerHTML = `
             <p>
                 <hr>
-                Achat de ${this.data.buildingBought} bâtiment(s) pour ${
+                Achat de <strong>${
+                    this.data.buildingBought
+                } </strong> bâtiment(s) pour <strong>${
             this.data.totalBought
-        } $
+        } $ </strong>
                 <hr>
                 Bénéfice total : <strong> ${this.data.earn} $ </strong> pour ${
             this.data.end - this.data.start
@@ -97,6 +112,63 @@ export default class DOM {
         `;
 
         return footer;
+    }
+
+    totalEarn(sessions) {
+        const lastSession = sessions[sessions.length - 1];
+        const activityStart = lastSession.start;
+        const activityEnd = sessions[0].end;
+        const activityDuration = activityEnd - activityStart;
+        sessions.forEach((estate) => {
+            this.totalEarnSinceStart += estate.earn;
+            this.totalBought += estate.totalBought;
+            this.totalBuildingBought += estate.buildingBought;
+            this.totalPourcentage = parseFloat(
+                (this.totalEarnSinceStart * 100) / this.totalBought
+            ).toFixed(2);
+            this.totalPayday = this.totalEarnSinceStart / activityDuration;
+        });
+
+        this.totalBought = this.numberFormat(this.totalBought);
+        this.totalEarnSinceStart = this.numberFormat(this.totalEarnSinceStart);
+        this.totalPayday = this.numberFormat(this.totalPayday);
+
+        const div = document.createElement("div");
+        div.classList.add("totalStats");
+        div.innerHTML = `
+            <h2>Statistiques global</h2>
+            <ul class="list">
+                <li>
+                    <span class="title">Batiments acheté</span>
+                    <span class="result">${this.totalBuildingBought}</span>
+                </li>
+                <li>
+                    <span class="title">Total investi</span>
+                    <span class="result">${this.totalBought} $</span>
+                </li>
+                <li>
+                    <span class="title">Bénéfice total</span>
+                    <span class="result">${this.totalEarnSinceStart} $</span>
+                </li>
+                <li>
+                    <span class="title">Bénéfice moyen</span>
+                    <span class="result">${this.totalPayday} $/jour</span>
+                </li>
+                <li>
+                    <span class="title">Période d'activité</span>
+                    <span class="result"> 
+                    ${activityDuration} jours 
+                    (${activityStart} &#8594; ${activityEnd})
+                    </span>
+                </li>
+                <li>
+                    <span class="title">Retour sur investissement</span>
+                    <span class="result">${this.totalPourcentage}%</span>
+                </li>
+            </ul>
+        `;
+
+        document.body.appendChild(div);
     }
 
     init() {

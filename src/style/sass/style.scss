@@ -1,11 +1,21 @@
 @import "./reset";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;900&family=Roboto:wght@100;400;700;900&display=swap");
 
 body,
 html {
     background: #eee;
     color: #222;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Roboto", sans-serif;
     line-height: 150%;
+}
+
+strong {
+    font-weight: 900;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
 }
 
 section {
@@ -21,14 +31,12 @@ section {
         text-align: center;
 
         span {
-            font-weight: 200;
+            font-weight: 100;
         }
     }
 
     .list {
-        list-style: none;
         margin: 0;
-        padding: 0;
 
         .head,
         .building {
@@ -62,5 +70,41 @@ section {
 
     .footer {
         margin-top: 40px;
+    }
+}
+
+.totalStats {
+    background: #222;
+    color: #eee;
+    width: 95%;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    h2 {
+        text-align: center;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    .list {
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+
+            .title {
+                text-transform: uppercase;
+                font-weight: 400;
+            }
+
+            &:nth-child(even) {
+                background: #333;
+            }
+        }
     }
 }
