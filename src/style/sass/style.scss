@@ -4,6 +4,7 @@
 $white: #eee;
 $black: #222;
 $green: #00ac72;
+$red: #dd4545;
 
 body,
 html {
@@ -49,11 +50,11 @@ section {
     .section-header,
     .inactive {
         padding: 20px 0;
-        cursor: pointer;
     }
 
     .section-header {
         transition: 0.3s ease-in-out;
+        cursor: pointer;
 
         &:hover {
             color: lighten($black, 50);
@@ -68,7 +69,8 @@ section {
 
         .list,
         .section-header,
-        .footer {
+        .footer,
+        .empty {
             display: block;
         }
 
@@ -87,11 +89,33 @@ section {
             justify-content: space-between;
             align-items: center;
         }
+        p {
+            text-align: center;
+            width: 100%;
+            font-size: 20px;
+            margin: 0;
+
+            span {
+                width: 35px;
+                height: 35px;
+                padding: 5px;
+                border-radius: 50%;
+                display: inline-block;
+                transition: 0.3s ease-in-out;
+                cursor: pointer;
+
+                &:hover {
+                    background: $black;
+                    color: $white;
+                }
+            }
+        }
     }
 
     .list,
     .section-header,
-    .footer {
+    .footer,
+    .empty {
         display: none;
     }
 
@@ -108,8 +132,15 @@ section {
         margin: 0;
 
         .head,
-        .building,
+        .building .display,
+        .building .editing,
         .input-group {
+            display: grid;
+            grid-template-columns: 0.2fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.3fr;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+
             &.head {
                 text-transform: uppercase;
                 font-weight: bold;
@@ -119,30 +150,70 @@ section {
                 background: $black;
             }
 
-            &.building {
-                padding: 10px;
+            div {
+                text-align: center;
+            }
+        }
 
-                .delete-building button {
-                    border: none;
+        .building {
+            padding: 10px;
 
-                    &:hover {
-                        background: transparent;
-                        transform: rotate(90deg);
-                    }
-                }
+            .delete-estate button {
+                border: none;
 
-                &:nth-child(odd) {
-                    background: darken($white, 7);
+                &:hover {
+                    background: transparent;
+                    transform: rotate(90deg);
+                    color: $red;
                 }
             }
 
-            display: grid;
-            grid-template-columns: 0.2fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.3fr;
-            justify-content: center;
-            align-items: center;
+            .edit-estate button {
+                border: none;
 
-            div {
+                &:hover {
+                    background: transparent;
+                    transform: scale(1.5);
+                    color: $green;
+                }
+            }
+
+            &:nth-child(odd) {
+                background: darken($white, 7);
+            }
+
+            input {
                 text-align: center;
+                width: 90%;
+                padding: 5px;
+                border: none;
+                outline: none;
+                background: transparent;
+                border-bottom: 2px solid $black;
+                transition: 0.3s ease-in-out;
+
+                &:focus {
+                    border-bottom: 2px solid $green;
+                }
+            }
+            .buyAt.input {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                input {
+                    width: 40%;
+                    text-align: center;
+                }
+            }
+
+            .display {
+                transition: 0.3s ease-in-out;
+                border-radius: 10px;
+                cursor: pointer;
+                &:hover {
+                    background: lighten($green, 50);
+                }
             }
         }
     }
@@ -191,6 +262,7 @@ section {
 .input-group {
     padding: 10px;
     background: $black;
+    color: $white;
     input,
     button {
         padding: 5px;
@@ -203,6 +275,7 @@ section {
     }
 
     input {
+        transition: 0.3s ease-in-out;
         &:focus {
             border-bottom: 2px solid $white;
         }
