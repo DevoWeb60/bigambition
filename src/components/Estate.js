@@ -1,6 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { confirmToDelete, frNumber, toMillion } from "../Functions";
+import {
+    confirmToDelete,
+    frNumber,
+    getDifference,
+    getPourcentage,
+    toMillion,
+} from "../Functions";
 import { deleteEstate, updateEstate } from "../redux/slicer/sessionSlice";
 
 export default function Estate({ estate, sessionId }) {
@@ -8,10 +14,8 @@ export default function Estate({ estate, sessionId }) {
     const dispatch = useDispatch();
     const form = useRef();
 
-    const difference = estate.sale - estate.bought;
-    const pourcentage = parseFloat(
-        (difference * 100) / estate.estimated
-    ).toFixed(2);
+    const difference = getDifference(estate.sale, estate.bought);
+    const pourcentage = getPourcentage(difference, estate.estimated);
 
     const handleDelete = () => {
         confirmToDelete("Es-tu sûr de vouloir supprimer ce batiment ?", () =>
@@ -23,8 +27,6 @@ export default function Estate({ estate, sessionId }) {
         setOnEdit(!onEdit);
     };
 
-    console.log(onEdit);
-
     const handleEdit = () => {
         const inputs = form.current.children;
         const newEstate = {
@@ -34,6 +36,11 @@ export default function Estate({ estate, sessionId }) {
             sale: Number(inputs.sale.value),
             buyAt: Number(inputs[4].children.buyAt.value),
             sellAt: Number(inputs[4].children.sellAt.value) || 0,
+            difference: getDifference(inputs.sale.value - inputs.bought.value),
+            pourcentage: getPourcentage(
+                inputs.sale.value - inputs.bought.value,
+                inputs.estimated.value
+            ),
         };
 
         if (newEstate.buyAt > newEstate.sellAt) {
@@ -58,7 +65,9 @@ export default function Estate({ estate, sessionId }) {
             {!onEdit ? (
                 <div className="display" onClick={toggleEdit}>
                     <div className="delete-estate">
-                        <button onClick={handleDelete}>&#9587;</button>
+                        <button onClick={handleDelete}>
+                            <i className="fas fa-trash"></i>
+                        </button>
                     </div>
                     <div className="estimated">
                         {frNumber(estate.estimated)} $
@@ -66,7 +75,9 @@ export default function Estate({ estate, sessionId }) {
                     <div className="bought">{frNumber(estate.bought)} $</div>
                     <div className="sale">{frNumber(estate.sale)} $</div>
                     <div className="buyAt">
-                        {estate.buyAt} &#8594; {estate.sellAt}
+                        {estate.buyAt}{" "}
+                        <i className="fas fa-long-arrow-alt-right"></i>{" "}
+                        {estate.sellAt}
                     </div>
                     <div className="difference">{frNumber(difference)} $</div>
                     <div className="differenceDay">
@@ -102,7 +113,7 @@ export default function Estate({ estate, sessionId }) {
                             name="buyAt"
                             defaultValue={estate.buyAt}
                         />
-                        &#8594;
+                        <i className="fas fa-long-arrow-alt-right"></i>
                         <input
                             type="number"
                             required
@@ -111,7 +122,9 @@ export default function Estate({ estate, sessionId }) {
                         />
                     </div>
                     <div className="edit-estate">
-                        <button onClick={handleEdit}>&#10004;</button>
+                        <button onClick={handleEdit}>
+                            <i className="fas fa-check"></i>
+                        </button>
                     </div>
                     <div></div>
                     <div></div>

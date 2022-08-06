@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toMillion } from "../../Functions";
+import { getTotal, getTotalEarn, toMillion } from "../../Functions";
 
 const initialState = {
     sessions: [],
@@ -12,15 +12,14 @@ export const sessionSlice = createSlice({
         initData: (state, action) => {
             state.sessions = action.payload;
         },
-        createSession: (state, action) => {
-            state.sessions = [action.payload, ...state.sessions];
-            localStorage.setItem("sessions", JSON.stringify(state.sessions));
-        },
         createEstate: (state, action) => {
             state.sessions.forEach((session) => {
                 if (session.id === action.payload.sessionId) {
                     session.estates.push(action.payload.estate);
                     session.totalEstateBought = session.estates.length;
+                    session.totalBought = getTotal(session.estates, "bought");
+                    session.totalEarn = getTotalEarn(session.estates);
+                    session.newBudget = session.budget + session.totalEarn;
                 }
             });
             localStorage.setItem("sessions", JSON.stringify(state.sessions));
@@ -32,6 +31,9 @@ export const sessionSlice = createSlice({
                         (estate) => estate.id !== action.payload.estateId
                     );
                     session.totalEstateBought = session.estates.length;
+                    session.totalBought = getTotal(session.estates, "bought");
+                    session.totalEarn = getTotalEarn(session.estates);
+                    session.newBudget = session.budget + session.totalEarn;
                 }
             });
             localStorage.setItem("sessions", JSON.stringify(state.sessions));
@@ -54,6 +56,25 @@ export const sessionSlice = createSlice({
                             estate.sellAt = action.payload.updatedEstate.sellAt;
                         }
                     });
+                    session.totalBought = getTotal(session.estates, "bought");
+                    session.totalEarn = getTotalEarn(session.estates);
+                    session.newBudget = session.budget + session.totalEarn;
+                }
+            });
+            localStorage.setItem("sessions", JSON.stringify(state.sessions));
+        },
+        createSession: (state, action) => {
+            state.sessions = [action.payload, ...state.sessions];
+            localStorage.setItem("sessions", JSON.stringify(state.sessions));
+        },
+        updateSession: (state, action) => {
+            state.sessions.forEach((session) => {
+                if (session.id === action.payload.sessionId) {
+                    session.start = action.payload.start;
+                    session.end = action.payload.end;
+                    session.budget = action.payload.budget;
+                    session.newBudget =
+                        action.payload.budget + session.totalEarn;
                 }
             });
             localStorage.setItem("sessions", JSON.stringify(state.sessions));
@@ -76,6 +97,7 @@ export const {
     initData,
     deleteSession,
     updateEstate,
+    updateSession,
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

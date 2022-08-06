@@ -1,12 +1,18 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { confirmToDelete, frNumber, toMillion } from "../Functions";
-import { createEstate, deleteSession } from "../redux/slicer/sessionSlice";
+import {
+    createEstate,
+    deleteSession,
+    updateSession,
+} from "../redux/slicer/sessionSlice";
 import Estate from "./Estate";
+import SessionFooter from "./SessionFooter";
 
 export default function Session({ session }) {
     const dispatch = useDispatch();
     const [isActive, setIsActive] = useState(false);
+    const [onEdit, setOnEdit] = useState(false);
 
     const toggleSession = () => {
         setIsActive(!isActive);
@@ -19,6 +25,36 @@ export default function Session({ session }) {
     };
 
     const form = useRef();
+    const formEdit = useRef();
+
+    const handleEdit = () => {
+        const inputs = formEdit.current.children;
+        const period = inputs[0].children;
+        const budget = inputs[1].children;
+
+        const sessionEdit = {
+            sessionId: session.id,
+            start: Number(period.start.value),
+            end: Number(period.end.value),
+            budget: toMillion(budget.budget.value),
+        };
+
+        if (sessionEdit.start > sessionEdit.end) {
+            alert("La date de début doit être inférieure à la date de fin");
+            return;
+        } else if (
+            sessionEdit.budget <= 0 ||
+            sessionEdit.start <= 0 ||
+            sessionEdit.end <= 0
+        ) {
+            alert("Tu dois remplis tout les champs");
+            return;
+        } else {
+            dispatch(updateSession(sessionEdit));
+            setOnEdit(false);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const inputs = form.current;
@@ -51,7 +87,7 @@ export default function Session({ session }) {
         }
     };
 
-    console.log("Session", session.estates);
+    // console.log("Session", session);
 
     return (
         <section className={isActive ? "active" : ""}>
@@ -59,15 +95,16 @@ export default function Session({ session }) {
                 <div className="inactive-header">
                     <h2>
                         Jour {session.start + " "}
-                        &#8594; Jour {session.end}
+                        <i className="fas fa-long-arrow-alt-right"></i> Jour{" "}
+                        {session.end}
                     </h2>
                     <h3>
                         <span>Budget : </span>
                         {frNumber(session.budget)} $
                     </h3>
                     <h3>
-                        <span>Batiment : </span>
-                        {session.totalEstateBought}
+                        <span>Bénéfice : </span>
+                        {frNumber(session.totalEarn)} $
                     </h3>
                     <button
                         className="delete"
@@ -77,26 +114,77 @@ export default function Session({ session }) {
                     </button>
                 </div>
                 <p>
-                    <span onClick={toggleSession}>&#8595;</span>
+                    <span onClick={toggleSession}>
+                        <i className="fas fa-long-arrow-alt-down"></i>
+                    </span>
                 </p>
             </div>
-            <div className="section-header" onClick={toggleSession}>
-                <h2>
-                    Jour {session.start} &#8594; Jour {session.end}
-                </h2>
-                <h3>
-                    <span>Budget :</span> {frNumber(session.budget)} $
-                </h3>
+            <div className="absolute-session-edit">
+                <button
+                    onClick={() => {
+                        setOnEdit(!onEdit);
+                    }}
+                >
+                    <i className="fas fa-edit"></i>
+                </button>
             </div>
+            {!onEdit ? (
+                <div className="section-header display" onClick={toggleSession}>
+                    <h2>
+                        Jour {session.start}{" "}
+                        <i className="fas fa-long-arrow-alt-right"></i> Jour{" "}
+                        {session.end}
+                    </h2>
+                    <h3>
+                        <span>Budget :</span> {frNumber(session.budget)} $
+                    </h3>
+                </div>
+            ) : (
+                <div className="section-header edit" ref={formEdit}>
+                    <h2>
+                        Jour{" "}
+                        <input
+                            type="number"
+                            name="start"
+                            id="start-edit"
+                            defaultValue={session.start}
+                        />{" "}
+                        <i className="fas fa-long-arrow-alt-right"></i> Jour{" "}
+                        <input
+                            type="number"
+                            name="end-edit"
+                            id="end"
+                            defaultValue={session.end}
+                        />
+                    </h2>
+                    <h3>
+                        <span>Budget :</span>{" "}
+                        <input
+                            type="number"
+                            name="budget"
+                            id="budget-edit"
+                            defaultValue={toMillion(session.budget, false)}
+                        />{" "}
+                        $
+                    </h3>
+                    <button onClick={handleEdit}>
+                        <i className="fas fa-check"></i>
+                    </button>
+                </div>
+            )}
             <ul className="list">
-                {session.estates.length != 0 ? (
+                {session.estates.length !== 0 ? (
                     <>
                         <li className="head">
                             <div className="delete-estate"></div>
                             <div className="estimated">Valeur estimé</div>
                             <div className="bought">Acheté</div>
                             <div className="sale">Vendu</div>
-                            <div className="buyAt">Achat &#8594; Vente</div>
+                            <div className="buyAt">
+                                Achat{" "}
+                                <i className="fas fa-long-arrow-alt-right"></i>
+                                Vente
+                            </div>
                             <div className="difference">Bénéfice</div>
                             <div className="differenceDay">Vendu en</div>
                             <div className="pourcentage">Bénéfice %</div>
@@ -140,7 +228,7 @@ export default function Session({ session }) {
                             placeholder="23"
                             defaultValue={session.start}
                         />
-                        &#8594;
+                        <i className="fas fa-long-arrow-alt-right"></i>
                         <input
                             type="number"
                             required
@@ -154,6 +242,7 @@ export default function Session({ session }) {
                     <button onClick={(e) => handleSubmit(e)}>Ajouter</button>
                 </form>
             </ul>
+            <SessionFooter session={session} />
         </section>
     );
 }

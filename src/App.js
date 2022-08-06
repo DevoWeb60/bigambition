@@ -15,11 +15,11 @@ function App() {
 
     useEffect(() => {
         // localStorage.removeItem("sessions");
-        if (localData !== null || localData.length != 0) {
+        if (localData !== null || localData.length !== 0) {
             dispatch(initData(localData));
             setLoading(false);
         }
-    }, [localData]);
+    }, [localData, dispatch]);
 
     // console.log("App", sessions);
 

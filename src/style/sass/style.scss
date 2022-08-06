@@ -39,6 +39,7 @@ button {
 }
 
 section {
+    position: relative;
     max-width: 95%;
     padding: 0 20px;
     background: lighten($white, 10%);
@@ -52,12 +53,45 @@ section {
         padding: 20px 0;
     }
 
-    .section-header {
+    .section-header.display {
         transition: 0.3s ease-in-out;
         cursor: pointer;
 
         &:hover {
             color: lighten($black, 50);
+        }
+    }
+    .section-header.edit {
+        h2 {
+            input {
+                width: 100px;
+            }
+        }
+        input {
+            outline: none;
+            border: none;
+            padding: 5px;
+            border-radius: 9999px;
+            border: 2px solid $black;
+            text-align: center;
+            transition: 0.3s ease-in-out;
+
+            &:focus {
+                border-color: $green;
+            }
+        }
+        button {
+            border: none;
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            text-align: center;
+
+            &:hover {
+                background: transparent;
+                transform: scale(1.5);
+                color: $green;
+            }
         }
     }
 
@@ -70,7 +104,8 @@ section {
         .list,
         .section-header,
         .footer,
-        .empty {
+        .empty,
+        .absolute-session-edit {
             display: block;
         }
 
@@ -115,8 +150,15 @@ section {
     .list,
     .section-header,
     .footer,
-    .empty {
+    .empty,
+    .absolute-session-edit {
         display: none;
+    }
+
+    .absolute-session-edit {
+        position: absolute;
+        top: 20px;
+        left: 20px;
     }
 
     h2,
@@ -158,24 +200,19 @@ section {
         .building {
             padding: 10px;
 
-            .delete-estate button {
-                border: none;
-
-                &:hover {
-                    background: transparent;
-                    transform: rotate(90deg);
-                    color: $red;
-                }
-            }
-
+            .delete-estate button,
             .edit-estate button {
                 border: none;
 
                 &:hover {
                     background: transparent;
                     transform: scale(1.5);
-                    color: $green;
+                    color: $red;
                 }
+            }
+
+            .edit-estate button:hover {
+                color: $green;
             }
 
             &:nth-child(odd) {
