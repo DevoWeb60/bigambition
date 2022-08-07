@@ -15,7 +15,10 @@ export default function Estate({ estate, sessionId }) {
     const form = useRef();
 
     const difference = getDifference(estate.sale, estate.bought);
-    const pourcentage = getPourcentage(difference, estate.estimated);
+    const pourcentage = getPourcentage(
+        estate.estimated - estate.bought,
+        estate.estimated
+    );
 
     const handleDelete = () => {
         confirmToDelete("Es-tu sûr de vouloir supprimer ce batiment ?", () =>
@@ -38,7 +41,7 @@ export default function Estate({ estate, sessionId }) {
             sellAt: Number(inputs[4].children.sellAt.value) || 0,
             difference: getDifference(inputs.sale.value - inputs.bought.value),
             pourcentage: getPourcentage(
-                inputs.sale.value - inputs.bought.value,
+                inputs.estimated.value - inputs.bought.value,
                 inputs.estimated.value
             ),
         };

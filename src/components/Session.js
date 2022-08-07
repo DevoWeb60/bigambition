@@ -97,6 +97,10 @@ export default function Session({ session }) {
                         Jour {session.start + " "}
                         <i className="fas fa-long-arrow-alt-right"></i> Jour{" "}
                         {session.end}
+                        <br />
+                        <span className="activityDuration">
+                            {session.end - session.start} jour(s)
+                        </span>
                     </h2>
                     <h3>
                         <span>Budget : </span>
@@ -105,6 +109,10 @@ export default function Session({ session }) {
                     <h3>
                         <span>Bénéfice : </span>
                         {frNumber(session.totalEarn)} $
+                    </h3>
+                    <h3>
+                        <span>Batiment(s) : </span>
+                        {frNumber(session.totalEstateBought)}
                     </h3>
                     <button
                         className="delete"
@@ -187,7 +195,7 @@ export default function Session({ session }) {
                             </div>
                             <div className="difference">Bénéfice</div>
                             <div className="differenceDay">Vendu en</div>
-                            <div className="pourcentage">Bénéfice %</div>
+                            <div className="pourcentage">Réduction %</div>
                         </li>
                         {session.estates.map((estate) => (
                             <Estate

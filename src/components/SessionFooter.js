@@ -36,7 +36,8 @@ export default function SessionFooter({ session }) {
             <hr />
             Nouveau budget : <strong>~ {frNumber(session.newBudget)} $ </strong>
             <hr />
-            Pourcentage moyen de rachat : <strong>{middlePourcent}%</strong>
+            Pourcentage moyen des reductions :{" "}
+            <strong>{middlePourcent}%</strong>
             <hr />
         </div>
     );
