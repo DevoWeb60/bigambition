@@ -1,6 +1,7 @@
 import React from "react";
 import {
     frNumber,
+    getAverage,
     getMiddleEarnPourcentage,
     getPayday,
     getPourcentage,
@@ -15,6 +16,9 @@ export default function SessionFooter({ session }) {
     const payday = getPayday(session.totalEarn, session.start, session.end);
 
     const middlePourcent = getMiddleEarnPourcentage(session.estates);
+    const averageEstimatePrice = getAverage(session.estates, "estimated");
+    const averageSalePrice = getAverage(session.estates, "sale");
+    const averageBoughtPrice = getAverage(session.estates, "bought");
 
     return (
         <div className="footer">
@@ -39,6 +43,14 @@ export default function SessionFooter({ session }) {
             Pourcentage moyen des reductions :{" "}
             <strong>{middlePourcent}%</strong>
             <hr />
+            Moyenne des prix d'estimation :{" "}
+            <strong>{frNumber(averageEstimatePrice)} $</strong>
+            <hr />
+            Moyenne des prix d'achat :{" "}
+            <strong>{frNumber(averageBoughtPrice)} $</strong>
+            <hr />
+            Moyenne des prix de vente :{" "}
+            <strong>{frNumber(averageSalePrice)} $</strong>
         </div>
     );
 }

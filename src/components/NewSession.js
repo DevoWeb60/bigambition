@@ -46,9 +46,13 @@ export default function NewSession() {
             budget = toMillion(sessions[0]?.newBudget, false);
         }
     } else {
-        console.log("budget", sessions[0]?.budget);
-        budget = toMillion(sessions[0]?.budget, false);
+        if (sessions[0]?.budget) {
+            console.log("budget", sessions[0]?.budget);
+            budget = toMillion(sessions[0]?.budget, false);
+        }
     }
+
+    useEffect(() => {}, [sessions]);
 
     return (
         <div className="new-session">

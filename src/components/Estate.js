@@ -83,8 +83,12 @@ export default function Estate({ estate, sessionId }) {
                         {estate.sellAt}
                     </div>
                     <div className="difference">{frNumber(difference)} $</div>
-                    <div className="differenceDay">
-                        {estate.sellAt - estate.buyAt} jour(s)
+                    <div className="perDay">
+                        {frNumber(
+                            Math.round(
+                                difference / (estate.sellAt - estate.buyAt)
+                            )
+                        ) + " $/j"}
                     </div>
                     <div className="pourcentage">{pourcentage}  %</div>
                 </div>

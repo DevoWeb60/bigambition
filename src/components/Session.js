@@ -194,7 +194,7 @@ export default function Session({ session }) {
                                 Vente
                             </div>
                             <div className="difference">Bénéfice</div>
-                            <div className="differenceDay">Vendu en</div>
+                            <div className="differenceDay">Bénéf. /jour</div>
                             <div className="pourcentage">Réduction %</div>
                         </li>
                         {session.estates.map((estate) => (

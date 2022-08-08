@@ -5,8 +5,6 @@ import { frNumber, getPourcentage, getTotal } from "../Functions";
 export default function Stats() {
     const { sessions } = useSelector((state) => state.sessions);
 
-    console.log(sessions);
-
     const [lastSession, setLastSession] = useState(sessions[0] || []);
     const [firstSession, setFirstSession] = useState(
         sessions[sessions.length - 1] || []

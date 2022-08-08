@@ -51,3 +51,11 @@ export function getMiddleEarnPourcentage(estates) {
     });
     return parseFloat(totalPourcent / estates.length).toFixed(2);
 }
+
+export function getAverage(array, key) {
+    return Math.round(
+        array.reduce((acc, estate) => {
+            return acc + estate[key];
+        }, 0) / array.length
+    );
+}
